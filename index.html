@@ -759,26 +759,6 @@
     min-width: 120px;
     padding-inline: 12px;
   }
-  .map-layer-toggle {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 6px;
-  }
-  .map-layer-toggle button {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    color: var(--text3);
-    cursor: pointer;
-    padding: 8px 10px;
-    font-weight: 700;
-    font-size: 0.76rem;
-  }
-  .map-layer-toggle button.active {
-    background: var(--accent);
-    color: #1a1a2e;
-    border-color: var(--accent);
-  }
   .map-quiz-tip {
     background: var(--surface2);
     border: 1px solid var(--border2);
@@ -803,6 +783,16 @@
     font-size: 0.68rem;
     line-height: 1.45;
   }
+  .map-quiz-rate {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .map-quiz-rate .btn {
+    min-width: 0;
+    padding: 9px 10px;
+    font-size: 0.82rem;
+  }
   .map-quiz-map-wrap {
     border: 1px solid var(--border);
     border-radius: 12px;
@@ -817,6 +807,10 @@
 
   .interactive-select {
     max-width: 1180px;
+  }
+  #view-mapquiz {
+    max-width: none !important;
+    padding: 12px;
   }
   .interactive-select .settings-panel {
     margin-bottom: 14px;
@@ -1105,15 +1099,11 @@
         <div class="map-quiz-label">Find this point</div>
         <div class="map-quiz-target" id="map-quiz-target">Loading...</div>
       </div>
-      <p class="map-quiz-hint" id="map-quiz-hint">Click on the official map where you think the point is. Within 10 km counts as correct.</p>
+      <p class="map-quiz-hint" id="map-quiz-hint">Click on the official map where you think the point is. Within 5 km counts as correct.</p>
       <div class="map-quiz-stats">
         <div class="map-quiz-stat"><div class="v" id="map-quiz-score">0</div><div class="k">Correct</div></div>
         <div class="map-quiz-stat"><div class="v" id="map-quiz-asked">0</div><div class="k">Asked</div></div>
         <div class="map-quiz-stat"><div class="v" id="map-quiz-streak">0</div><div class="k">Streak</div></div>
-      </div>
-      <div class="map-layer-toggle">
-        <button id="map-layer-clean" type="button">Clean</button>
-        <button class="active" id="map-layer-topo" type="button">Topo</button>
       </div>
       <div class="map-quiz-result" id="map-quiz-result">
         <div class="map-quiz-result-title">Ready</div>
@@ -1127,8 +1117,14 @@
         <button class="btn btn-next hidden" id="map-quiz-next">Next Point</button>
         <button class="btn btn-restart" id="map-quiz-reset">Restart</button>
       </div>
+      <div class="map-quiz-rate hidden" id="map-quiz-rate">
+        <button class="btn btn-again" data-rating="1">Again</button>
+        <button class="btn btn-hard" data-rating="2">Hard</button>
+        <button class="btn btn-good" data-rating="3">Good</button>
+        <button class="btn btn-easy" data-rating="4">Easy</button>
+      </div>
       <div class="map-quiz-source">
-        Topo is reliable for the full training area. Clean uses official swisstopo aerial imagery and removes labels where imagery is available.
+        Official swisstopo topographic map via geo.admin.ch. Correct radius: 5 km.
       </div>
     </aside>
     <div class="map-quiz-map-wrap">
@@ -1363,6 +1359,46 @@ const POINT_INFO = {
   "Zermatt": "Car-free resort at 1620 m at the foot of the Matterhorn. Accessed only by rail from Visp/T\u00e4sch. No airfield."
 };
 
+const POINT_VISUAL_CUES = {
+  "Aigle": "Visual cue: flat Rhone valley town with the road/rail split toward Col des Mosses and Leysin.",
+  "Annecy": "Visual cue: large town at the north end of Lac d'Annecy; the lake points south into the Alps.",
+  "Annemasse": "Visual cue: urban area immediately SE of Geneva, below the Saleve ridge.",
+  "Bellegarde": "Visual cue: deep Rhone/Valserine gorge and motorway/rail axis west of Geneva.",
+  "Bouveret": "Visual cue: eastern mouth of Lake Geneva, where the Rhone delta begins.",
+  "Chasseral": "Altitude 1607 m. Visual cue: long Jura ridge with a very distinctive transmitter tower.",
+  "Chasseron": "Altitude 1607 m. Visual cue: Vaud Jura summit above Ste-Croix, west of Lake Neuchatel.",
+  "Col de la Forclaz": "Altitude 1527 m. Visual cue: pass above Martigny toward Trient/Chamonix.",
+  "Col de la Seigne": "Altitude about 2516 m. Visual cue: high Mont Blanc border pass between France and Italy.",
+  "Col des Mosses": "Altitude 1445 m. Visual cue: open pass linking Aigle and Chateau d'Oex.",
+  "Col du Pillon": "Altitude 1546 m. Visual cue: pass at Les Diablerets/Glacier 3000, east of the Rhone valley.",
+  "Col du Simplon": "Altitude 2005 m. Visual cue: broad alpine road pass south-east of Brig toward Italy.",
+  "Concordia Platz": "Altitude around 2700-2800 m. Visual cue: glacier junction in the Aletsch system.",
+  "Dent de Jaman": "Altitude 1875 m. Visual cue: tooth-shaped peak above Montreux.",
+  "Dents du Midi": "Highest summit 3257 m. Visual cue: seven-summit wall above Monthey/lower Valais.",
+  "Eiger": "Altitude 3967 m. Visual cue: famous north face in the Eiger-Monch-Jungfrau group.",
+  "Gemmipass": "Altitude 2314 m. Visual cue: high pass with steep cliff above Leukerbad, north toward Kandersteg.",
+  "Grand Muveran": "Altitude 3051 m. Visual cue: massive limestone mountain between Vaud and Valais.",
+  "Grand St-Bernard": "Altitude 2469 m. Visual cue: historic pass and hospice between Valais and Aosta.",
+  "Jaunpass": "Altitude 1509 m. Visual cue: pre-Alpine pass between Gruyere/Jaun and Simmental.",
+  "Jungfrau": "Altitude 4158 m. Visual cue: high Bernese Alps peak near Jungfraujoch.",
+  "Matterhorn": "Altitude 4478 m. Visual cue: sharp pyramid on the Swiss-Italian border above Zermatt.",
+  "Petit St-Bernard": "Altitude 2188 m. Visual cue: pass between France and Italy south of Mont Blanc.",
+  "Rawilpass": "Altitude 2429 m. Visual cue: high crossing between Lenk and the Crans-Montana side.",
+  "Saleve": "Altitude 1379 m. Visual cue: long ridge directly south of Geneva; Geneva's balcony.",
+  "Sal\u00e8ve": "Altitude 1379 m. Visual cue: long ridge directly south of Geneva; Geneva's balcony.",
+  "Sanetschpass": "Altitude 2243 m. Visual cue: remote pass above Gsteig/Sion, road access mainly from Bern side.",
+  "Thonon": "Visual cue: larger town on the south shore of Lake Geneva, on a bluff above the lake.",
+  "Thun": "Visual cue: city at the NW end of Lake Thun with a castle hill and military area.",
+  "Yverdon": "Visual cue: town at the SW tip of Lake Neuchatel with nearby airfield LSGY.",
+  "Zermatt": "Altitude about 1620 m. Visual cue: car-free valley town at the foot of the Matterhorn."
+};
+
+function getPointTip(point) {
+  const base = POINT_INFO[point.name] || "Use the surrounding terrain, lakes, valleys, passes, and borders to anchor this point visually.";
+  const cue = POINT_VISUAL_CUES[point.name];
+  return cue ? base + " " + cue : base;
+}
+
 // === SRS ENGINE ===
 const STORAGE_KEY = "fic_delta_srs_v3";
 const FAV_KEY = "fic_delta_favs_v1";
@@ -1433,12 +1469,10 @@ let markers = {};
 
 // === TILE LAYER ===
 const TILE_URL = "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg";
-const CLEAN_TILE_URL = "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.swissimage/default/current/3857/{z}/{x}/{y}.jpeg";
 const TILE_ATTR = '&copy; <a href="https://www.swisstopo.admin.ch/">swisstopo</a> / <a href="https://www.geo.admin.ch/">geo.admin.ch</a>';
 
-function createTileLayer(kind = "topo") {
-  const url = kind === "clean" ? CLEAN_TILE_URL : TILE_URL;
-  return L.tileLayer(url, { attribution: TILE_ATTR, maxZoom: 18, maxNativeZoom: 18 });
+function createTileLayer() {
+  return L.tileLayer(TILE_URL, { attribution: TILE_ATTR, maxZoom: 18, maxNativeZoom: 18 });
 }
 
 // === ANSWER MAP (interactive, with red dot) ===
@@ -1472,8 +1506,6 @@ function showPointOnMap(mapId, point) {
 // === GENERIC FLASHCARD ENGINE ===
 function createFlashcardEngine(cfg) {
   let queue = [];
-  let sourceCards = [];
-  let sourceOrder = "random";
   let idx = 0;
   let revealed = false;
 
@@ -1798,16 +1830,18 @@ const favEngine = (() => {
 })();
 
 // === MAP QUIZ ENGINE ===
-const MAP_QUIZ_THRESHOLD_KM = 10;
+const MAP_QUIZ_THRESHOLD_KM = 5;
 const mapQuiz = (() => {
   let map = null;
   let baseLayer = null;
-  let layerKind = "topo";
   let queue = [];
   let idx = 0;
+  let sourceCards = [];
+  let sourceOrder = "random";
   let current = null;
   let locked = false;
   let sessionType = "srs";
+  let pendingRating = false;
   let score = 0;
   let asked = 0;
   let streak = 0;
@@ -1830,27 +1864,17 @@ const mapQuiz = (() => {
     setTimeout(() => {
       if (!map) {
         map = L.map("map-quiz", {
-          center: [46.55, 6.75],
-          zoom: 7,
+          center: [46.82, 7.55],
+          zoom: 8,
           zoomControl: true,
           attributionControl: true
         });
-        baseLayer = createTileLayer(layerKind).addTo(map);
+        baseLayer = createTileLayer().addTo(map);
         map.on("click", handleGuess);
       }
       map.invalidateSize();
       if (!current) start(getDueCards(srsData), { type: "srs", resetScore: true });
     }, 80);
-  }
-
-  function setLayer(kind) {
-    layerKind = kind;
-    if (map) {
-      if (baseLayer) map.removeLayer(baseLayer);
-      baseLayer = createTileLayer(kind).addTo(map);
-    }
-    document.getElementById("map-layer-clean").classList.toggle("active", kind === "clean");
-    document.getElementById("map-layer-topo").classList.toggle("active", kind === "topo");
   }
 
   function start(cards, options = {}) {
@@ -1867,43 +1891,46 @@ const mapQuiz = (() => {
       asked = 0;
       streak = 0;
     }
+    if (map) map.setView([46.82, 7.55], 8);
     next();
     updateStatsPanel();
   }
 
   function restart() {
     if (sessionType === "srs") start(getDueCards(srsData), { type: "srs" });
-    else start(sourceCards.length ? sourceCards : POINTS, { type: "practice", order: sourceOrder });
+    else start(sourceCards.length ? sourceCards : POINTS, { type: "favorites", order: sourceOrder });
   }
 
   function next() {
-    if (idx >= queue.length) {
-      if (sessionType === "srs") queue = shuffle(getDueCards(srsData));
-      else queue = sourceOrder === "alpha"
-        ? [...sourceCards].sort((a, b) => a.name.localeCompare(b.name))
-        : shuffle(sourceCards.length ? sourceCards : POINTS);
-      idx = 0;
-    }
+    if (pendingRating) return;
     if (queue.length === 0) {
       current = null;
-      document.getElementById("map-quiz-target").textContent = "All caught up";
-      document.getElementById("map-quiz-hint").textContent = "No due interactive cards right now. Restart to practice all points.";
+      document.getElementById("map-quiz-target").textContent = sessionType === "favorites" ? "Deck complete" : "All caught up";
+      document.getElementById("map-quiz-hint").textContent = sessionType === "favorites"
+        ? "Every selected point was answered correctly. Restart to run the same deck again."
+        : "No due interactive cards right now. Restart to practice due cards again.";
       document.getElementById("map-quiz-next").classList.add("hidden");
+      document.getElementById("map-quiz-rate").classList.add("hidden");
+      document.getElementById("map-quiz-tip").classList.add("hidden");
+      const result = document.getElementById("map-quiz-result");
+      result.className = "map-quiz-result good";
+      result.innerHTML = '<div class="map-quiz-result-title">Session finished</div><div class="map-quiz-meta">Correct: ' + score + ' / ' + asked + '</div>';
       return;
     }
-    current = queue[idx++];
+    current = queue.shift();
     locked = false;
     clearResultLayers();
     document.getElementById("map-quiz-target").textContent = current.name;
     document.getElementById("map-quiz-hint").textContent = sessionType === "srs"
-      ? "Interactive spaced repetition: click where you think this due point is."
+      ? "Interactive spaced repetition: click where you think this point is, then rate it."
       : "Click where you think this selected point is.";
     document.getElementById("map-quiz-map-note").textContent = "Click your guess on the map.";
     document.getElementById("map-quiz-next").classList.add("hidden");
+    document.getElementById("map-quiz-rate").classList.add("hidden");
     document.getElementById("map-quiz-tip").classList.add("hidden");
     const result = document.getElementById("map-quiz-result");
     result.className = "map-quiz-result";
-    result.innerHTML = '<div class="map-quiz-result-title">Waiting for your guess</div><div class="map-quiz-meta">Aim for the named place, pass, peak, or landmark. Within 10 km counts as correct.</div>';
+    result.innerHTML = '<div class="map-quiz-result-title">Waiting for your guess</div><div class="map-quiz-meta">Aim for the named place, pass, peak, or landmark. Within 5 km counts as correct.</div>';
   }
 
   function handleGuess(e) {
@@ -1918,14 +1945,35 @@ const mapQuiz = (() => {
     if (correct) {
       score++;
       streak++;
-      if (sessionType === "srs") rateCard(srsData, current.name, 3);
     } else {
       streak = 0;
-      if (sessionType === "srs") rateCard(srsData, current.name, 1);
+      if (sessionType === "favorites") requeueCurrent();
     }
+    pendingRating = sessionType === "srs";
     updateStatsPanel();
-    updateStats();
     showResult(guess, actual, km, correct);
+  }
+
+  function requeueCurrent() {
+    if (!current) return;
+    if (queue.length >= 4) {
+      const insertAt = Math.min(queue.length, 3 + Math.floor(Math.random() * 3));
+      queue.splice(insertAt, 0, current);
+    } else {
+      queue.push(current);
+    }
+  }
+
+  function rate(rating) {
+    if (!pendingRating || !current) return;
+    rateCard(srsData, current.name, rating);
+    if (rating <= 2) {
+      const insertAt = Math.min(queue.length, rating === 1 ? 3 : 6);
+      queue.splice(insertAt, 0, current);
+    }
+    pendingRating = false;
+    updateStats();
+    next();
   }
 
   function showResult(guess, actual, km, correct) {
@@ -1970,12 +2018,14 @@ const mapQuiz = (() => {
       '<div class="map-quiz-result-title">' + (correct ? "Correct" : "Not quite") + '</div>' +
       '<div class="map-quiz-distance">' + km.toFixed(1) + ' km</div>' +
       '<div class="map-quiz-meta">Actual: ' + current.lat.toFixed(4) + '&deg;N, ' + current.lon.toFixed(4) + '&deg;E<br>Threshold: ' + MAP_QUIZ_THRESHOLD_KM + ' km</div>';
-    document.getElementById("map-quiz-map-note").textContent = correct ? "Inside the 10 km circle." : "Outside the 10 km circle.";
-    if (POINT_INFO[current.name]) {
-      document.getElementById("map-quiz-tip-text").textContent = POINT_INFO[current.name];
-      document.getElementById("map-quiz-tip").classList.remove("hidden");
+    document.getElementById("map-quiz-map-note").textContent = correct ? "Inside the 5 km circle." : "Outside the 5 km circle.";
+    document.getElementById("map-quiz-tip-text").textContent = getPointTip(current);
+    document.getElementById("map-quiz-tip").classList.remove("hidden");
+    if (sessionType === "srs") {
+      document.getElementById("map-quiz-rate").classList.remove("hidden");
+    } else {
+      document.getElementById("map-quiz-next").classList.remove("hidden");
     }
-    document.getElementById("map-quiz-next").classList.remove("hidden");
   }
 
   function updateStatsPanel() {
@@ -1984,7 +2034,7 @@ const mapQuiz = (() => {
     document.getElementById("map-quiz-streak").textContent = streak;
   }
 
-  return { init, restart, next, start, setLayer, isLocked: () => locked };
+  return { init, restart, next, start, rate, isLocked: () => locked };
 })();
 
 // === STATS ===
@@ -2161,14 +2211,15 @@ document.getElementById("int-fav-start").addEventListener("click", () => {
   if (selected.length === 0) return;
   const order = document.getElementById("int-fav-order").value;
   switchView("mapquiz");
-  mapQuiz.start(selected, { type: "practice", order });
+  mapQuiz.start(selected, { type: "favorites", order });
 });
 
 // === MAP QUIZ WIRING ===
 document.getElementById("map-quiz-next").addEventListener("click", () => mapQuiz.next());
 document.getElementById("map-quiz-reset").addEventListener("click", () => mapQuiz.restart());
-document.getElementById("map-layer-clean").addEventListener("click", () => mapQuiz.setLayer("clean"));
-document.getElementById("map-layer-topo").addEventListener("click", () => mapQuiz.setLayer("topo"));
+document.querySelectorAll("#map-quiz-rate .btn").forEach(btn => {
+  btn.addEventListener("click", () => mapQuiz.rate(parseInt(btn.dataset.rating)));
+});
 
 // === EXPLORE VIEW ===
 let exploreMap = null;
@@ -2247,6 +2298,9 @@ document.addEventListener("keydown", e => {
   if (mode === "favorites" && favEngine.isRevealed()) {
     if (e.key === "j" || e.key === "J") favEngine.knew();
     else if (e.key === "f" || e.key === "F") favEngine.wrong();
+  }
+  if (mode === "mapquiz" && e.key >= "1" && e.key <= "4") {
+    mapQuiz.rate(parseInt(e.key));
   }
 });
 
