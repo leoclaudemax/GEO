@@ -69,6 +69,14 @@
     flex: 1;
     justify-content: center;
   }
+  .nav-section {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .nav-section .nav-tab {
+    padding-inline: 12px;
+  }
   .nav-tab {
     padding: 8px 18px;
     border-radius: 8px;
@@ -99,6 +107,63 @@
     padding: 20px;
   }
   .hidden { display: none !important; }
+
+  /* === HOME === */
+  .home-view {
+    max-width: 980px;
+    min-height: calc(100vh - 52px);
+    display: grid;
+    place-items: center;
+  }
+  .home-inner {
+    width: 100%;
+  }
+  .home-title {
+    color: #fff;
+    font-size: 2.5rem;
+    line-height: 1.05;
+    letter-spacing: 0;
+    margin-bottom: 10px;
+  }
+  .home-subtitle {
+    color: var(--text2);
+    font-size: 1rem;
+    max-width: 680px;
+    line-height: 1.5;
+    margin-bottom: 24px;
+  }
+  .home-choice-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .home-choice {
+    text-align: left;
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    cursor: pointer;
+    min-height: 190px;
+    transition: transform 0.15s, border-color 0.15s, background 0.15s;
+  }
+  .home-choice:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+    background: var(--surface2);
+  }
+  .home-choice .title {
+    color: var(--accent2);
+    font-weight: 800;
+    font-size: 1.35rem;
+    margin-bottom: 10px;
+  }
+  .home-choice .body {
+    color: var(--text2);
+    font-size: 0.92rem;
+    line-height: 1.45;
+  }
 
   /* === PROGRESS === */
   .progress-bar {
@@ -602,19 +667,19 @@
   /* === MAP QUIZ === */
   .map-quiz-shell {
     display: grid;
-    grid-template-columns: 320px minmax(0, 1fr);
-    gap: 16px;
-    height: calc(100vh - 92px);
+    grid-template-columns: 260px minmax(0, 1fr);
+    gap: 12px;
+    height: calc(100vh - 72px);
     min-height: 620px;
   }
   .map-quiz-panel {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 12px;
-    padding: 18px;
+    padding: 14px;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 10px;
   }
   .map-quiz-label {
     color: var(--text3);
@@ -623,7 +688,7 @@
     letter-spacing: 0.6px;
   }
   .map-quiz-target {
-    font-size: 2rem;
+    font-size: 1.55rem;
     line-height: 1.08;
     color: #fff;
     font-weight: 800;
@@ -631,7 +696,7 @@
   }
   .map-quiz-hint {
     color: var(--text2);
-    font-size: 0.9rem;
+    font-size: 0.82rem;
     line-height: 1.45;
   }
   .map-quiz-result {
@@ -639,7 +704,7 @@
     border-radius: 10px;
     padding: 12px;
     background: var(--bg2);
-    min-height: 96px;
+    min-height: 84px;
   }
   .map-quiz-result.good { border-color: rgba(104,211,145,0.55); }
   .map-quiz-result.bad { border-color: rgba(252,129,129,0.55); }
@@ -649,7 +714,7 @@
     color: var(--accent2);
   }
   .map-quiz-distance {
-    font-size: 1.45rem;
+    font-size: 1.25rem;
     font-weight: 800;
     color: #fff;
     margin-bottom: 4px;
@@ -694,11 +759,48 @@
     min-width: 120px;
     padding-inline: 12px;
   }
+  .map-layer-toggle {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+  .map-layer-toggle button {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text3);
+    cursor: pointer;
+    padding: 8px 10px;
+    font-weight: 700;
+    font-size: 0.76rem;
+  }
+  .map-layer-toggle button.active {
+    background: var(--accent);
+    color: #1a1a2e;
+    border-color: var(--accent);
+  }
+  .map-quiz-tip {
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: 10px;
+    padding: 10px;
+    color: var(--text2);
+    font-size: 0.8rem;
+    line-height: 1.42;
+  }
+  .map-quiz-tip-title {
+    color: var(--accent);
+    font-size: 0.66rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-weight: 800;
+    margin-bottom: 5px;
+  }
   .map-quiz-source {
     border-top: 1px solid var(--border);
     padding-top: 12px;
     color: var(--text3);
-    font-size: 0.74rem;
+    font-size: 0.68rem;
     line-height: 1.45;
   }
   .map-quiz-map-wrap {
@@ -711,6 +813,16 @@
   .map-quiz-map-wrap #map-quiz {
     height: 100%;
     border: none;
+  }
+
+  .interactive-select {
+    max-width: 1180px;
+  }
+  .interactive-select .settings-panel {
+    margin-bottom: 14px;
+  }
+  .interactive-select .fav-actions {
+    margin-bottom: 14px;
   }
   .map-quiz-map-note {
     position: absolute;
@@ -739,6 +851,9 @@
     .explore-list { width: 100%; max-height: 250px; }
     .explore-map-wrap { height: 400px; }
     .fav-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+    .home-view { min-height: auto; display: block; }
+    .home-title { font-size: 2rem; }
+    .home-choice-grid { grid-template-columns: 1fr; }
     .map-quiz-shell { grid-template-columns: 1fr; height: auto; min-height: 0; }
     .map-quiz-map-wrap { height: 460px; }
     .map-quiz-target { font-size: 1.6rem; }
@@ -750,12 +865,18 @@
 
 <nav>
   <div class="logo">FIC Delta<span>Skyguide ATC</span></div>
-  <div class="nav-tabs">
+  <div class="nav-section">
+    <button class="nav-tab active" data-mode="home">Menu</button>
+  </div>
+  <div class="nav-tabs hidden" id="flashcard-tabs">
     <button class="nav-tab active" data-mode="srs">Spaced Repetition</button>
     <button class="nav-tab" data-mode="drill">Drill Mode</button>
     <button class="nav-tab" data-mode="favorites">Favorites</button>
     <button class="nav-tab" data-mode="explore">Explore</button>
-    <button class="nav-tab" data-mode="mapquiz">Map Quiz</button>
+  </div>
+  <div class="nav-tabs hidden" id="interactive-tabs">
+    <button class="nav-tab" data-mode="mapquiz">Spaced Repetition</button>
+    <button class="nav-tab" data-mode="intfavorites">Favorites</button>
   </div>
   <div class="nav-stats">
     <div>Due <span class="v" id="stat-due">0</span></div>
@@ -764,8 +885,26 @@
   </div>
 </nav>
 
+<!-- ========== HOME VIEW ========== -->
+<div class="app home-view" id="view-home">
+  <div class="home-inner">
+    <h1 class="home-title">FIC Delta Geography Trainer</h1>
+    <p class="home-subtitle">Choose your learning mode. Flashcards keeps the original site layout; Interactive Map turns the same points into click-on-the-map practice.</p>
+    <div class="home-choice-grid">
+      <button class="home-choice" id="open-flashcards">
+        <div class="title">Flashcards</div>
+        <div class="body">Classic reveal-and-review training with spaced repetition, drill mode, favorites, and explore.</div>
+      </button>
+      <button class="home-choice" id="open-interactive">
+        <div class="title">Interactive Map</div>
+        <div class="body">Answer by clicking the map. Use spaced repetition or choose exactly which points you want to practice.</div>
+      </button>
+    </div>
+  </div>
+</div>
+
 <!-- ========== SRS VIEW ========== -->
-<div class="app" id="view-srs">
+<div class="app hidden" id="view-srs">
   <div class="progress-bar"><div class="progress-fill" id="progress-srs"></div></div>
   <div class="ref-map-wrap">
     <div class="ref-map-label">Reference Map</div>
@@ -932,6 +1071,32 @@
   </div>
 </div>
 
+<!-- ========== INTERACTIVE FAVORITES VIEW ========== -->
+<div class="app hidden interactive-select" id="view-intfavorites">
+  <div class="favorites-view">
+    <div class="fav-header">
+      <h3>Select Interactive Points</h3>
+      <input type="text" class="fav-search" id="int-fav-search" placeholder="Search points...">
+    </div>
+    <div class="settings-panel">
+      <div class="settings-row">
+        <label>Order</label>
+        <select id="int-fav-order">
+          <option value="random">Random</option>
+          <option value="alpha">Alphabetical</option>
+        </select>
+      </div>
+    </div>
+    <div class="fav-actions">
+      <span class="fav-count" id="int-fav-count">0 selected</span>
+      <button class="btn-sm" id="int-fav-select-all">Select All</button>
+      <button class="btn-sm" id="int-fav-clear">Clear</button>
+      <button class="btn-sm primary" id="int-fav-start">Start Interactive Quiz</button>
+    </div>
+    <div class="fav-grid" id="int-fav-grid"></div>
+  </div>
+</div>
+
 <!-- ========== MAP QUIZ VIEW ========== -->
 <div class="app hidden" id="view-mapquiz" style="max-width:1400px">
   <div class="map-quiz-shell">
@@ -946,16 +1111,24 @@
         <div class="map-quiz-stat"><div class="v" id="map-quiz-asked">0</div><div class="k">Asked</div></div>
         <div class="map-quiz-stat"><div class="v" id="map-quiz-streak">0</div><div class="k">Streak</div></div>
       </div>
+      <div class="map-layer-toggle">
+        <button id="map-layer-clean" type="button">Clean</button>
+        <button class="active" id="map-layer-topo" type="button">Topo</button>
+      </div>
       <div class="map-quiz-result" id="map-quiz-result">
         <div class="map-quiz-result-title">Ready</div>
         <div class="map-quiz-meta">Your first target will appear as soon as the map is ready.</div>
+      </div>
+      <div class="map-quiz-tip hidden" id="map-quiz-tip">
+        <div class="map-quiz-tip-title">Memory Tip</div>
+        <div id="map-quiz-tip-text"></div>
       </div>
       <div class="map-quiz-controls">
         <button class="btn btn-next hidden" id="map-quiz-next">Next Point</button>
         <button class="btn btn-restart" id="map-quiz-reset">Restart</button>
       </div>
       <div class="map-quiz-source">
-        Map layer: official swisstopo national map via geo.admin.ch WMTS. Coordinates use the point list in this file; Swiss and French commune centers should be checked against geo.admin.ch / API Geo before you use the quiz as an operational reference.
+        Topo is reliable for the full training area. Clean uses official swisstopo aerial imagery and removes labels where imagery is available.
       </div>
     </aside>
     <div class="map-quiz-map-wrap">
@@ -1193,6 +1366,7 @@ const POINT_INFO = {
 // === SRS ENGINE ===
 const STORAGE_KEY = "fic_delta_srs_v3";
 const FAV_KEY = "fic_delta_favs_v1";
+const INT_FAV_KEY = "fic_delta_interactive_favs_v1";
 
 function loadSRS() {
   try { const d = JSON.parse(localStorage.getItem(STORAGE_KEY)); if (d && d.cards) return d; } catch(e) {}
@@ -1250,16 +1424,21 @@ function saveFavorites(set) { localStorage.setItem(FAV_KEY, JSON.stringify([...s
 // === STATE ===
 let srsData = loadSRS();
 let favorites = loadFavorites();
-let mode = "srs";
+let interactiveFavorites = (() => {
+  try { return new Set(JSON.parse(localStorage.getItem(INT_FAV_KEY)) || []); } catch(e) { return new Set(); }
+})();
+let mode = "home";
 let maps = {};
 let markers = {};
 
 // === TILE LAYER ===
 const TILE_URL = "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg";
+const CLEAN_TILE_URL = "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.swissimage/default/current/3857/{z}/{x}/{y}.jpeg";
 const TILE_ATTR = '&copy; <a href="https://www.swisstopo.admin.ch/">swisstopo</a> / <a href="https://www.geo.admin.ch/">geo.admin.ch</a>';
 
-function createTileLayer() {
-  return L.tileLayer(TILE_URL, { attribution: TILE_ATTR, maxZoom: 18, maxNativeZoom: 18 });
+function createTileLayer(kind = "topo") {
+  const url = kind === "clean" ? CLEAN_TILE_URL : TILE_URL;
+  return L.tileLayer(url, { attribution: TILE_ATTR, maxZoom: 18, maxNativeZoom: 18 });
 }
 
 // === ANSWER MAP (interactive, with red dot) ===
@@ -1293,6 +1472,8 @@ function showPointOnMap(mapId, point) {
 // === GENERIC FLASHCARD ENGINE ===
 function createFlashcardEngine(cfg) {
   let queue = [];
+  let sourceCards = [];
+  let sourceOrder = "random";
   let idx = 0;
   let revealed = false;
 
@@ -1620,10 +1801,13 @@ const favEngine = (() => {
 const MAP_QUIZ_THRESHOLD_KM = 10;
 const mapQuiz = (() => {
   let map = null;
+  let baseLayer = null;
+  let layerKind = "topo";
   let queue = [];
   let idx = 0;
   let current = null;
   let locked = false;
+  let sessionType = "srs";
   let score = 0;
   let asked = 0;
   let streak = 0;
@@ -1646,38 +1830,77 @@ const mapQuiz = (() => {
     setTimeout(() => {
       if (!map) {
         map = L.map("map-quiz", {
-          center: [46.55, 6.85],
-          zoom: 8,
+          center: [46.55, 6.75],
+          zoom: 7,
           zoomControl: true,
           attributionControl: true
         });
-        createTileLayer().addTo(map);
+        baseLayer = createTileLayer(layerKind).addTo(map);
         map.on("click", handleGuess);
       }
       map.invalidateSize();
-      if (!current) restart();
+      if (!current) start(getDueCards(srsData), { type: "srs", resetScore: true });
     }, 80);
   }
 
-  function restart() {
-    queue = shuffle(POINTS);
+  function setLayer(kind) {
+    layerKind = kind;
+    if (map) {
+      if (baseLayer) map.removeLayer(baseLayer);
+      baseLayer = createTileLayer(kind).addTo(map);
+    }
+    document.getElementById("map-layer-clean").classList.toggle("active", kind === "clean");
+    document.getElementById("map-layer-topo").classList.toggle("active", kind === "topo");
+  }
+
+  function start(cards, options = {}) {
+    const baseCards = cards && cards.length ? cards : POINTS;
+    sourceCards = [...baseCards];
+    sourceOrder = options.order || "random";
+    queue = options.order === "alpha"
+      ? [...baseCards].sort((a, b) => a.name.localeCompare(b.name))
+      : shuffle(baseCards);
     idx = 0;
-    score = 0;
-    asked = 0;
-    streak = 0;
+    sessionType = options.type || "practice";
+    if (options.resetScore !== false) {
+      score = 0;
+      asked = 0;
+      streak = 0;
+    }
     next();
     updateStatsPanel();
   }
 
+  function restart() {
+    if (sessionType === "srs") start(getDueCards(srsData), { type: "srs" });
+    else start(sourceCards.length ? sourceCards : POINTS, { type: "practice", order: sourceOrder });
+  }
+
   function next() {
-    if (idx >= queue.length) queue = shuffle(POINTS), idx = 0;
+    if (idx >= queue.length) {
+      if (sessionType === "srs") queue = shuffle(getDueCards(srsData));
+      else queue = sourceOrder === "alpha"
+        ? [...sourceCards].sort((a, b) => a.name.localeCompare(b.name))
+        : shuffle(sourceCards.length ? sourceCards : POINTS);
+      idx = 0;
+    }
+    if (queue.length === 0) {
+      current = null;
+      document.getElementById("map-quiz-target").textContent = "All caught up";
+      document.getElementById("map-quiz-hint").textContent = "No due interactive cards right now. Restart to practice all points.";
+      document.getElementById("map-quiz-next").classList.add("hidden");
+      return;
+    }
     current = queue[idx++];
     locked = false;
     clearResultLayers();
     document.getElementById("map-quiz-target").textContent = current.name;
-    document.getElementById("map-quiz-hint").textContent = "Click on the official map where you think this point is.";
+    document.getElementById("map-quiz-hint").textContent = sessionType === "srs"
+      ? "Interactive spaced repetition: click where you think this due point is."
+      : "Click where you think this selected point is.";
     document.getElementById("map-quiz-map-note").textContent = "Click your guess on the map.";
     document.getElementById("map-quiz-next").classList.add("hidden");
+    document.getElementById("map-quiz-tip").classList.add("hidden");
     const result = document.getElementById("map-quiz-result");
     result.className = "map-quiz-result";
     result.innerHTML = '<div class="map-quiz-result-title">Waiting for your guess</div><div class="map-quiz-meta">Aim for the named place, pass, peak, or landmark. Within 10 km counts as correct.</div>';
@@ -1695,10 +1918,13 @@ const mapQuiz = (() => {
     if (correct) {
       score++;
       streak++;
+      if (sessionType === "srs") rateCard(srsData, current.name, 3);
     } else {
       streak = 0;
+      if (sessionType === "srs") rateCard(srsData, current.name, 1);
     }
     updateStatsPanel();
+    updateStats();
     showResult(guess, actual, km, correct);
   }
 
@@ -1736,7 +1962,7 @@ const mapQuiz = (() => {
     }).addTo(map);
 
     const bounds = L.latLngBounds([guess, actual]).pad(0.35);
-    map.fitBounds(bounds, { maxZoom: 10, animate: true });
+    map.fitBounds(bounds, { maxZoom: 9, animate: true });
 
     const result = document.getElementById("map-quiz-result");
     result.className = "map-quiz-result " + (correct ? "good" : "bad");
@@ -1745,6 +1971,10 @@ const mapQuiz = (() => {
       '<div class="map-quiz-distance">' + km.toFixed(1) + ' km</div>' +
       '<div class="map-quiz-meta">Actual: ' + current.lat.toFixed(4) + '&deg;N, ' + current.lon.toFixed(4) + '&deg;E<br>Threshold: ' + MAP_QUIZ_THRESHOLD_KM + ' km</div>';
     document.getElementById("map-quiz-map-note").textContent = correct ? "Inside the 10 km circle." : "Outside the 10 km circle.";
+    if (POINT_INFO[current.name]) {
+      document.getElementById("map-quiz-tip-text").textContent = POINT_INFO[current.name];
+      document.getElementById("map-quiz-tip").classList.remove("hidden");
+    }
     document.getElementById("map-quiz-next").classList.remove("hidden");
   }
 
@@ -1754,7 +1984,7 @@ const mapQuiz = (() => {
     document.getElementById("map-quiz-streak").textContent = streak;
   }
 
-  return { init, restart, next, isLocked: () => locked };
+  return { init, restart, next, start, setLayer, isLocked: () => locked };
 })();
 
 // === STATS ===
@@ -1772,14 +2002,20 @@ function updateStats() {
 }
 
 // === VIEW SWITCHING ===
-const views = ["view-srs", "view-drill", "view-favorites", "view-explore", "view-mapquiz"];
+const flashcardModes = new Set(["srs", "drill", "favorites", "explore"]);
+const interactiveModes = new Set(["mapquiz", "intfavorites"]);
+const views = ["view-home", "view-srs", "view-drill", "view-favorites", "view-explore", "view-mapquiz", "view-intfavorites"];
 
 function switchView(m) {
   mode = m;
   views.forEach(v => document.getElementById(v).classList.add("hidden"));
   document.querySelectorAll(".nav-tab").forEach(t => t.classList.toggle("active", t.dataset.mode === m));
+  document.getElementById("flashcard-tabs").classList.toggle("hidden", !flashcardModes.has(m));
+  document.getElementById("interactive-tabs").classList.toggle("hidden", !interactiveModes.has(m));
 
-  if (m === "srs") {
+  if (m === "home") {
+    document.getElementById("view-home").classList.remove("hidden");
+  } else if (m === "srs") {
     document.getElementById("view-srs").classList.remove("hidden");
     srsEngine.start(getDueCards(srsData));
   } else if (m === "drill") {
@@ -1799,6 +2035,10 @@ function switchView(m) {
   } else if (m === "mapquiz") {
     document.getElementById("view-mapquiz").classList.remove("hidden");
     mapQuiz.init();
+    mapQuiz.start(getDueCards(srsData), { type: "srs" });
+  } else if (m === "intfavorites") {
+    document.getElementById("view-intfavorites").classList.remove("hidden");
+    renderInteractiveFavorites();
   }
   updateStats();
 }
@@ -1806,6 +2046,8 @@ function switchView(m) {
 document.querySelectorAll(".nav-tab").forEach(tab => {
   tab.addEventListener("click", () => switchView(tab.dataset.mode));
 });
+document.getElementById("open-flashcards").addEventListener("click", () => switchView("srs"));
+document.getElementById("open-interactive").addEventListener("click", () => switchView("mapquiz"));
 
 // === SRS WIRING ===
 document.getElementById("btn-reveal-srs").addEventListener("click", () => srsEngine.reveal());
@@ -1879,9 +2121,54 @@ document.getElementById("btn-knew-fav").addEventListener("click", () => favEngin
 document.getElementById("btn-wrong-fav").addEventListener("click", () => favEngine.wrong());
 document.getElementById("restart-fav").addEventListener("click", () => switchView("favorites"));
 
+// === INTERACTIVE FAVORITES WIRING ===
+function saveInteractiveFavorites() {
+  localStorage.setItem(INT_FAV_KEY, JSON.stringify([...interactiveFavorites]));
+}
+
+function renderInteractiveFavorites(filter = "") {
+  const grid = document.getElementById("int-fav-grid");
+  grid.innerHTML = "";
+  const f = filter.toLowerCase();
+  POINTS.filter(p => !f || p.name.toLowerCase().includes(f)).forEach(p => {
+    const el = document.createElement("div");
+    el.className = "fav-item" + (interactiveFavorites.has(p.name) ? " selected" : "");
+    el.innerHTML = `<div class="check">${interactiveFavorites.has(p.name) ? "\u2713" : ""}</div><span>${p.name}</span>`;
+    el.addEventListener("click", () => {
+      if (interactiveFavorites.has(p.name)) interactiveFavorites.delete(p.name);
+      else interactiveFavorites.add(p.name);
+      saveInteractiveFavorites();
+      renderInteractiveFavorites(document.getElementById("int-fav-search").value);
+    });
+    grid.appendChild(el);
+  });
+  document.getElementById("int-fav-count").textContent = interactiveFavorites.size + " selected";
+}
+
+document.getElementById("int-fav-search").addEventListener("input", e => renderInteractiveFavorites(e.target.value));
+document.getElementById("int-fav-select-all").addEventListener("click", () => {
+  POINTS.forEach(p => interactiveFavorites.add(p.name));
+  saveInteractiveFavorites();
+  renderInteractiveFavorites(document.getElementById("int-fav-search").value);
+});
+document.getElementById("int-fav-clear").addEventListener("click", () => {
+  interactiveFavorites.clear();
+  saveInteractiveFavorites();
+  renderInteractiveFavorites(document.getElementById("int-fav-search").value);
+});
+document.getElementById("int-fav-start").addEventListener("click", () => {
+  const selected = POINTS.filter(p => interactiveFavorites.has(p.name));
+  if (selected.length === 0) return;
+  const order = document.getElementById("int-fav-order").value;
+  switchView("mapquiz");
+  mapQuiz.start(selected, { type: "practice", order });
+});
+
 // === MAP QUIZ WIRING ===
 document.getElementById("map-quiz-next").addEventListener("click", () => mapQuiz.next());
 document.getElementById("map-quiz-reset").addEventListener("click", () => mapQuiz.restart());
+document.getElementById("map-layer-clean").addEventListener("click", () => mapQuiz.setLayer("clean"));
+document.getElementById("map-layer-topo").addEventListener("click", () => mapQuiz.setLayer("topo"));
 
 // === EXPLORE VIEW ===
 let exploreMap = null;
@@ -1965,7 +2252,7 @@ document.addEventListener("keydown", e => {
 
 // === INIT ===
 updateStats();
-srsEngine.start(getDueCards(srsData));
+switchView("home");
 </script>
 </body>
 </html>
