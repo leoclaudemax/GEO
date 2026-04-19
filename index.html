@@ -2210,7 +2210,10 @@ document.getElementById("int-fav-start").addEventListener("click", () => {
   const selected = POINTS.filter(p => interactiveFavorites.has(p.name));
   if (selected.length === 0) return;
   const order = document.getElementById("int-fav-order").value;
-  switchView("mapquiz");
+  switchView("intfavorites");
+  document.getElementById("view-intfavorites").classList.add("hidden");
+  document.getElementById("view-mapquiz").classList.remove("hidden");
+  mapQuiz.init();
   mapQuiz.start(selected, { type: "favorites", order });
 });
 
@@ -2288,7 +2291,7 @@ document.addEventListener("keydown", e => {
     }
     else if (mode === "favorites") {
       if (!favEngine.isRevealed()) favEngine.reveal();
-    } else if (mode === "mapquiz") {
+    } else if (mode === "mapquiz" || mode === "intfavorites") {
       if (mapQuiz.isLocked()) mapQuiz.next();
     }
   }
@@ -2299,7 +2302,7 @@ document.addEventListener("keydown", e => {
     if (e.key === "j" || e.key === "J") favEngine.knew();
     else if (e.key === "f" || e.key === "F") favEngine.wrong();
   }
-  if (mode === "mapquiz" && e.key >= "1" && e.key <= "4") {
+  if ((mode === "mapquiz" || mode === "intfavorites") && e.key >= "1" && e.key <= "4") {
     mapQuiz.rate(parseInt(e.key));
   }
 });
