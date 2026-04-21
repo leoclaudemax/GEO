@@ -1124,7 +1124,7 @@
         <button class="btn btn-easy" data-rating="4">Easy</button>
       </div>
       <div class="map-quiz-source">
-        Official swisstopo topographic map via geo.admin.ch. Correct radius: 5 km.
+        Official swisstopo relief + hydrography via geo.admin.ch. No road network. Correct radius: 5 km.
       </div>
     </aside>
     <div class="map-quiz-map-wrap">
@@ -1469,10 +1469,18 @@ let markers = {};
 
 // === TILE LAYER ===
 const TILE_URL = "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg";
+const RELIEF_TILE_URL = "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.swissalti3d-reliefschattierung/default/current/3857/{z}/{x}/{y}.png";
+const WATER_TILE_URL = "https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.vec200-hydrography/default/current/3857/{z}/{x}/{y}.png";
 const TILE_ATTR = '&copy; <a href="https://www.swisstopo.admin.ch/">swisstopo</a> / <a href="https://www.geo.admin.ch/">geo.admin.ch</a>';
 
 function createTileLayer() {
   return L.tileLayer(TILE_URL, { attribution: TILE_ATTR, maxZoom: 18, maxNativeZoom: 18 });
+}
+
+function createInteractiveTileLayer() {
+  const relief = L.tileLayer(RELIEF_TILE_URL, { attribution: TILE_ATTR, maxZoom: 18, maxNativeZoom: 18 });
+  const water = L.tileLayer(WATER_TILE_URL, { attribution: TILE_ATTR, maxZoom: 18, maxNativeZoom: 18 });
+  return L.layerGroup([relief, water]);
 }
 
 // === ANSWER MAP (interactive, with red dot) ===
@@ -1869,7 +1877,7 @@ const mapQuiz = (() => {
           zoomControl: true,
           attributionControl: true
         });
-        baseLayer = createTileLayer().addTo(map);
+        baseLayer = createInteractiveTileLayer().addTo(map);
         map.on("click", handleGuess);
       }
       map.invalidateSize();
