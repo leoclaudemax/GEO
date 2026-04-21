@@ -546,6 +546,17 @@
     grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
     gap: 6px;
   }
+  .fav-category-title {
+    grid-column: 1 / -1;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    color: var(--accent);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+  }
   .fav-item {
     display: flex;
     align-items: center;
@@ -582,6 +593,20 @@
     background: var(--accent);
     border-color: var(--accent);
     color: #1a1a2e;
+  }
+  .fav-item.water {
+    background: rgba(99,179,237,0.09);
+    border-color: rgba(99,179,237,0.16);
+  }
+  .fav-item.water.selected {
+    background: rgba(99,179,237,0.16);
+    border-color: var(--blue);
+    color: #b9ddfb;
+  }
+  .fav-item.water.selected .check {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: #0f2438;
   }
 
   /* === EXPLORE VIEW === */
@@ -1247,6 +1272,37 @@ const POINTS = [
   { name: "Zermatt", lat: 46.0207, lon: 7.7491 }
 ];
 
+const WATER_POINTS = [
+  { name: "Lac Léman", lat: 46.4500, lon: 6.5300 },
+  { name: "Lac de Neuchâtel", lat: 46.8900, lon: 6.7800 },
+  { name: "Bielersee / Lac de Bienne", lat: 47.0900, lon: 7.1800 },
+  { name: "Murtensee / Lac de Morat", lat: 46.9300, lon: 7.0700 },
+  { name: "Lac de Joux", lat: 46.6300, lon: 6.2900 },
+  { name: "Lac de Gruyère", lat: 46.6400, lon: 7.0900 },
+  { name: "Schiffenensee", lat: 46.8500, lon: 7.2000 },
+  { name: "Thunersee", lat: 46.6900, lon: 7.7200 },
+  { name: "Brienzersee", lat: 46.7200, lon: 7.9800 },
+  { name: "Vierwaldstättersee", lat: 46.9900, lon: 8.3900 },
+  { name: "Zürichsee", lat: 47.2500, lon: 8.6700 },
+  { name: "Bodensee", lat: 47.6100, lon: 9.3900 },
+  { name: "Walensee", lat: 47.1200, lon: 9.2000 },
+  { name: "Zugersee", lat: 47.1200, lon: 8.4800 },
+  { name: "Sempachersee", lat: 47.1400, lon: 8.1600 },
+  { name: "Hallwilersee", lat: 47.2900, lon: 8.2200 },
+  { name: "Lac d'Annecy", lat: 45.8400, lon: 6.1700 },
+  { name: "Lac de Nantua", lat: 46.1600, lon: 5.6000 },
+  { name: "Lac de Saint-Point", lat: 46.8200, lon: 6.3100 },
+  { name: "Rhône", lat: 46.2500, lon: 7.2500 },
+  { name: "Aare", lat: 46.8600, lon: 7.6000 },
+  { name: "Reuss", lat: 47.0800, lon: 8.3600 },
+  { name: "Rhein", lat: 47.5700, lon: 8.5600 },
+  { name: "Linthkanal", lat: 47.1800, lon: 9.0300 },
+  { name: "Zihlkanal", lat: 47.0400, lon: 7.0600 },
+  { name: "Canal de la Broye", lat: 46.9300, lon: 7.0000 }
+];
+
+const ALL_INTERACTIVE_POINTS = [...POINTS, ...WATER_POINTS];
+
 // === POINT INFO ===
 const POINT_INFO = {
   "Aigle": "In the Rh\u00f4ne valley at the entrance to Val d'Illiez. Near the junction toward Col des Mosses and Leysin. Name means 'eagle' in French.",
@@ -1356,7 +1412,33 @@ const POINT_INFO = {
   "Yverdon": "At the SW end of Lake Neuch\u00e2tel. Thermal baths since Roman times. Small airfield (LSGY). Major transport junction.",
   "Yvoire": "Beautifully preserved medieval French village on a promontory on Lake Geneva. 'Most beautiful village of France.' Between Thonon and Geneva.",
   "Yvonand": "On the south shore of Lake Neuch\u00e2tel between Yverdon and Estavayer. Best sandy beach on the lake.",
-  "Zermatt": "Car-free resort at 1620 m at the foot of the Matterhorn. Accessed only by rail from Visp/T\u00e4sch. No airfield."
+  "Zermatt": "Car-free resort at 1620 m at the foot of the Matterhorn. Accessed only by rail from Visp/T\u00e4sch. No airfield.",
+  "Lac Léman": "Lake Geneva, the large crescent-shaped lake between Geneva, Lausanne, Montreux, and the French south shore. Major visual anchor for western Switzerland.",
+  "Lac de Neuchâtel": "Largest lake entirely in Switzerland. Runs SW-NE between Yverdon, Estavayer, Neuchatel, and the Seeland area.",
+  "Bielersee / Lac de Bienne": "Lake Biel/Bienne, east of Lake Neuchatel and connected to the Jura foot / Seeland lake system. Erlach sits near its western end.",
+  "Murtensee / Lac de Morat": "Lake Murten/Morat, small lake between Murten, Cudrefin, and the Broye canal system. South-east of Lake Neuchatel.",
+  "Lac de Joux": "High Jura lake in the Vallee de Joux, west of Yverdon and close to the French border. Long narrow shape in a Jura valley.",
+  "Lac de Gruyère": "Reservoir south of Fribourg and north of Bulle/Gruyeres. Long lake following the Sarine valley.",
+  "Schiffenensee": "Reservoir on the Sarine north of Fribourg. Useful landmark between Fribourg and the Bernese side.",
+  "Thunersee": "Long lake between Thun and Interlaken. Western gateway into the Bernese Oberland.",
+  "Brienzersee": "Long turquoise lake east of Interlaken, between Interlaken and Brienz. Immediately east of Lake Thun.",
+  "Vierwaldstättersee": "Complex branching lake around Lucerne. Strong visual landmark in central Switzerland.",
+  "Zürichsee": "Long narrow lake running SE from Zurich toward Rapperswil. Important north-eastern Swiss landmark.",
+  "Bodensee": "Lake Constance on the north-eastern edge of Switzerland, shared with Germany and Austria. Very large lake north of St. Gallen.",
+  "Walensee": "Narrow east-west lake between the Chur/Rhine valley side and Lake Zurich region. Steep mountains drop directly into the lake.",
+  "Zugersee": "Lake south of Zug and west of Rigi. Smaller central Swiss lake between Lake Lucerne and Lake Zurich.",
+  "Sempachersee": "Lake north-west of Lucerne near Sursee. Oval lake in the Swiss Plateau.",
+  "Hallwilersee": "Narrow north-south lake in Aargau/Lucerne region, north of Sempachersee and west of Lake Zurich.",
+  "Lac d'Annecy": "French Alpine lake south of Geneva, with Annecy at the northern end. Long lake pointing into the Haute-Savoie mountains.",
+  "Lac de Nantua": "Small French Jura lake beside Nantua, west of Geneva on the A40 Lyon-Geneva axis.",
+  "Lac de Saint-Point": "Large Jura lake south-west of Pontarlier, close to the Swiss border. Long north-south lake in the Haut-Doubs.",
+  "Rhône": "Linear training anchor for the Rhone valley in Valais. The river runs from the upper Valais through Martigny to Lake Geneva, then leaves Geneva toward France.",
+  "Aare": "Linear training anchor for the Aare system. In this area, it links the Bernese Oberland, Lake Thun, Bern, and the Seeland/Jura-foot lakes.",
+  "Reuss": "Linear training anchor for the Reuss around central Switzerland. It flows through Lake Lucerne and northward toward Aargau.",
+  "Rhein": "Linear training anchor for the Rhine along northern/eastern Switzerland. Important border/river reference near Schaffhausen and Basel.",
+  "Linthkanal": "Canalized waterway linking Walensee toward Lake Zurich through the Linth plain. Important east-west visual corridor.",
+  "Zihlkanal": "Canal between Lake Neuchatel and Lake Biel/Bienne in the Seeland three-lakes system.",
+  "Canal de la Broye": "Canal connecting Lake Morat/Murten with Lake Neuchatel near the Cudrefin/Seeland area."
 };
 
 const POINT_VISUAL_CUES = {
@@ -2180,9 +2262,9 @@ function renderInteractiveFavorites(filter = "") {
   const grid = document.getElementById("int-fav-grid");
   grid.innerHTML = "";
   const f = filter.toLowerCase();
-  POINTS.filter(p => !f || p.name.toLowerCase().includes(f)).forEach(p => {
+  const renderItem = (p, categoryClass = "") => {
     const el = document.createElement("div");
-    el.className = "fav-item" + (interactiveFavorites.has(p.name) ? " selected" : "");
+    el.className = "fav-item" + (categoryClass ? " " + categoryClass : "") + (interactiveFavorites.has(p.name) ? " selected" : "");
     el.innerHTML = `<div class="check">${interactiveFavorites.has(p.name) ? "\u2713" : ""}</div><span>${p.name}</span>`;
     el.addEventListener("click", () => {
       if (interactiveFavorites.has(p.name)) interactiveFavorites.delete(p.name);
@@ -2191,13 +2273,23 @@ function renderInteractiveFavorites(filter = "") {
       renderInteractiveFavorites(document.getElementById("int-fav-search").value);
     });
     grid.appendChild(el);
-  });
-  document.getElementById("int-fav-count").textContent = interactiveFavorites.size + " selected";
+  };
+  POINTS.filter(p => !f || p.name.toLowerCase().includes(f)).forEach(p => renderItem(p));
+  const visibleWater = WATER_POINTS.filter(p => !f || p.name.toLowerCase().includes(f));
+  if (visibleWater.length) {
+    const title = document.createElement("div");
+    title.className = "fav-category-title";
+    title.textContent = "Gewässer / Seen, Flüsse und Kanäle";
+    grid.appendChild(title);
+    visibleWater.forEach(p => renderItem(p, "water"));
+  }
+  const validSelected = ALL_INTERACTIVE_POINTS.filter(p => interactiveFavorites.has(p.name)).length;
+  document.getElementById("int-fav-count").textContent = validSelected + " selected";
 }
 
 document.getElementById("int-fav-search").addEventListener("input", e => renderInteractiveFavorites(e.target.value));
 document.getElementById("int-fav-select-all").addEventListener("click", () => {
-  POINTS.forEach(p => interactiveFavorites.add(p.name));
+  ALL_INTERACTIVE_POINTS.forEach(p => interactiveFavorites.add(p.name));
   saveInteractiveFavorites();
   renderInteractiveFavorites(document.getElementById("int-fav-search").value);
 });
@@ -2207,7 +2299,7 @@ document.getElementById("int-fav-clear").addEventListener("click", () => {
   renderInteractiveFavorites(document.getElementById("int-fav-search").value);
 });
 document.getElementById("int-fav-start").addEventListener("click", () => {
-  const selected = POINTS.filter(p => interactiveFavorites.has(p.name));
+  const selected = ALL_INTERACTIVE_POINTS.filter(p => interactiveFavorites.has(p.name));
   if (selected.length === 0) return;
   const order = document.getElementById("int-fav-order").value;
   switchView("intfavorites");
